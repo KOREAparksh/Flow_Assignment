@@ -1,10 +1,8 @@
 package com.flow.assignment
 
-import android.util.Log
 import com.flow.assignment.dto.MovieDto
-import com.flow.assignment.model.Movie
-import com.flow.assignment.service.MovieService
-import com.flow.assignment.service.RetrofitClient
+import com.flow.assignment.service.api.MovieApi
+import com.flow.assignment.service.api.RetrofitClient
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import retrofit2.Response
@@ -25,7 +23,7 @@ class ExampleUnitTest {
     @Test
     fun retrofitTest() {
         val retrofit: Retrofit = RetrofitClient.getInstance();
-        val movieService  = retrofit.create(MovieService::class.java)
+        val movieService  = retrofit.create(MovieApi::class.java)
         var dto: MovieDto
         val result = movieService.getMovies("아이언맨")
         try {
