@@ -28,8 +28,10 @@ targetSdk
 
 # Flow_Assignment
 ## 기능구현목록
-- [ ] model클래스, dto클래스 작성
-- [ ] Retrofit 사용하여 네이버 API 연결 및 테스트
+- [x] model클래스, dto클래스 작성
+- [x] Retrofit 사용하여 네이버 API 연결 및 테스트
+- [ ] Room 사용하여 DB 연결/저장 및 테스트
+- [ ] MVVM 구현
 
 ## 라이브러리 적용사항
 
