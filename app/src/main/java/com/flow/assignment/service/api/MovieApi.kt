@@ -1,10 +1,10 @@
-package com.flow.assignment.service
+package com.flow.assignment.service.api
 
 import com.flow.assignment.dto.MovieDto
 import retrofit2.Call
 import retrofit2.http.*
 
-interface MovieService {
+interface MovieApi {
     @GET("movie.json")
     fun getMovies(
         @Query("query", encoded = true) name: String,
