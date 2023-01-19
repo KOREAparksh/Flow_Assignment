@@ -2,6 +2,7 @@ package com.flow.assignment
 
 import android.util.Log
 import com.flow.assignment.dto.MovieDto
+import com.flow.assignment.model.Movie
 import com.flow.assignment.service.MovieService
 import com.flow.assignment.service.RetrofitClient
 import junit.framework.TestCase.assertEquals
@@ -31,9 +32,9 @@ class ExampleUnitTest {
             val response: Response<MovieDto> = result.execute()
             dto = response.body()!!
         }catch (e: Exception){
-            dto = MovieDto("", 1,1,1)
+            dto = MovieDto("", 1,1,1, listOf())
         }
-        println("123123")
         println(dto.toString())
+        println(dto.items.get(0).toString())
     }
 }
