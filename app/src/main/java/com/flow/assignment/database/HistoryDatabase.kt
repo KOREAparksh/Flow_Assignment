@@ -11,7 +11,6 @@ import com.flow.assignment.service.dao.HistoryDao
 abstract class HistoryDatabase : RoomDatabase() {
     abstract fun historyDao() : HistoryDao
 
-    // 데이터 베이스 객체를 싱글톤으로 인스턴스.
     companion object {
         private var instance: HistoryDatabase? = null
 
