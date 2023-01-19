@@ -1,4 +1,4 @@
-package com.flow.assignment.service
+package com.flow.assignment.service.api
 
 import com.flow.assignment.BuildConfig
 import com.google.gson.GsonBuilder
