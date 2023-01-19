@@ -11,17 +11,53 @@ api.pw="{api pw 값}"
 
 
 # 개발환경
-kotlin `1.7.21`
-Gradle `7.5.0`
+kotlin
+`1.7.21`
+Gradle
+`7.5.0`
 
 Android Studio
 `Android Studio Electric Eel | 2022.1.1`
 
-compileSdk `33`
-minSdk `26`
-targetSdk `33`
+compileSdk
+`33`
+minSdk
+`26`
+targetSdk
+`33`
+
+# Flow_Assignment
+## 기능구현목록
+- [ ] model클래스, dto클래스 작성
+- [ ] Retrofit 사용하여 네이버 API 연결 및 테스트
+
+## 라이브러리 적용사항
 
 # 컨벤션
 
 ## 브런치
+- main
+  - 프로젝트 생성
+  - Docs, HOTFIX, code 정리, file 정리
+- dev
+  - 개발 브랜치
+    - 구현된 기능들이 적용된 개발브랜치
+  - Docs
+- {feat}-{내용}
+  - 한 기능의 개발 브랜치
+
 ## 커밋
+- `Init`
+  첫 생성 시
+- `Feat`
+  기능 개발, 추가 등 새로이 추가된 내용
+- `Fix`
+  정상작동되지 않아 무언가 고칠 때
+- `Refactor`
+  기존 구현사항과 다르게 해결하고자 할 때
+- `Add`
+  asset file 등 추가 시
+- `Build`
+  라이브러리 추가 삭제 시
+- `Docs`
+  문서작성
