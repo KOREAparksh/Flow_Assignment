@@ -1,16 +1,22 @@
 package com.flow.assignment.util
 
 import androidx.room.TypeConverter
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 class Converters {
-    @TypeConverter
-    fun longToDate(value: Long?): Date?{
-        return value?.let { Date(it) }
-    }
+    companion object{
+        @JvmStatic
+        @TypeConverter
+        fun longToDate(value: Long): LocalDateTime {
+            return LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC)
+        }
 
-    @TypeConverter
-    fun dateToLong(date: Date?): Long?{
-        return date?.time?.toLong()
+        @JvmStatic
+        @TypeConverter
+        fun dateToLong(date: LocalDateTime): Long {
+            return date.toEpochSecond(ZoneOffset.UTC)
+        }
     }
 }
