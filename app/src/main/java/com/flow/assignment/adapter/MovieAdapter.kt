@@ -33,7 +33,10 @@ class MovieAdapter
     inner class ViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie, position: Int) {
+            var title : String = movie.title.replace("<b>", "")
+            title = title.replace("</b>", "")
             binding.movie = movie
+            binding.movieTitle = title
             Glide.with(binding.root.context)
                 .load(movie.image)
                 .into(binding.moviePoster)

@@ -11,7 +11,7 @@ interface HistoryDao {
     @Query("SELECT * FROM history LIMIT 1")
     suspend fun getFirst(): History
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveHistory(history: History)
     
     @Delete

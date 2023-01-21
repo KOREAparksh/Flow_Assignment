@@ -17,9 +17,13 @@ class HistoryRepository @Inject constructor(
     }
 
     suspend fun saveHistory(history: History){
-        if (historyDatabase.historyDao().countHistory() >= 10){
-            val temp: History = historyDatabase.historyDao().getFirst()
-            historyDatabase.historyDao().deleteHistory(temp)
+        val list: List<History> = getAll()
+        if (list.any { h: History -> h.query == history.query }){
+            historyDatabase.historyDao().saveHistory(history)
+            return
+        }
+        if (list.size >= 10){
+            historyDatabase.historyDao().deleteHistory(list.first())
         }
         historyDatabase.historyDao().saveHistory(history)
     }
