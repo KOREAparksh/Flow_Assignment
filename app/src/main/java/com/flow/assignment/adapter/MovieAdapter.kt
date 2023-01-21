@@ -1,11 +1,12 @@
 package com.flow.assignment.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.flow.assignment.R
-import com.flow.assignment.databinding.ItemLoadingBinding
 import com.flow.assignment.databinding.ItemMovieBinding
 import com.flow.assignment.model.Movie
 
@@ -36,6 +37,11 @@ class MovieAdapter
             Glide.with(binding.root.context)
                 .load(movie.image)
                 .into(binding.moviePoster)
+            binding.item.setOnClickListener{
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(movie.link)
+                binding.root.context.startActivity(i)
+            }
         }
     }
 

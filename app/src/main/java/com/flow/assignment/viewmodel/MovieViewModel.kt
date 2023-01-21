@@ -47,7 +47,6 @@ class MovieViewModel @Inject constructor(
                         //Todo: error Dialog
                     }
                 }
-
                 launch {
                     val temp = History(query, Converters.dateToLong(LocalDateTime.now()))
                     historyRepository.saveHistory(temp)
