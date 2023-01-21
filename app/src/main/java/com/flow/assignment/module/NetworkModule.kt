@@ -4,10 +4,11 @@ import com.flow.assignment.BuildConfig
 import com.flow.assignment.repository.MovieRepository
 import com.flow.assignment.service.api.MovieApi
 import com.flow.assignment.service.api.NaverInterceptor
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.components.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
