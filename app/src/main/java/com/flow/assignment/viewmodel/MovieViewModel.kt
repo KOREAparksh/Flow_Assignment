@@ -5,15 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flow.assignment.model.History
 import com.flow.assignment.model.Movie
 import com.flow.assignment.repository.HistoryRepository
 import com.flow.assignment.repository.MovieRepository
+import com.flow.assignment.util.Converters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
@@ -39,20 +40,25 @@ class MovieViewModel @Inject constructor(
 
     fun search(query: String){
         viewModelScope.launch (Dispatchers.IO + coroutineExceptionHandler)  {
-            _isLoading.postValue(true)
             searchQuery = query
+            _isLoading.postValue(true)
+            runBlocking {
+                launch {
+                    try {
+                        val movieDto = movieRepository.getMovies(query)
+                        _movies.postValue(movieDto.items)
+                        totalResult = movieDto.total
+                    } catch (e: Exception) {
+                        //Todo: error Dialog
+                    }
+                }
 
-            try {
-                val movieDto = movieRepository.getMovies(query)
-                _movies.postValue(movieDto.items)
-                totalResult = movieDto.total
-            }catch (e : Exception){
-                //Todo: error Dialog
-            }finally {
-                _isLoading.postValue(false)
+                launch {
+                    val temp = History(query, Converters.dateToLong(LocalDateTime.now()))
+                    historyRepository.saveHistory(temp)
+                }
             }
-
-            //Todo history 추가
+            _isLoading.postValue(false)
         }
     }
 
@@ -60,21 +66,16 @@ class MovieViewModel @Inject constructor(
         if (_movies.value.isNullOrEmpty() || totalResult <= _movies.value!!.size){
             return
         }
-
         viewModelScope.launch (Dispatchers.IO + coroutineExceptionHandler) {
             _isLoading.postValue(true)
-
             try {
                 val movieDto = movieRepository.getMovies(searchQuery, _movies.value!!.size + 1)
                 _movies.postValue(movieDto.items)
                 totalResult = movieDto.total
             }catch (e : Exception){
                 //Todo: error Dialog
-            }finally {
-                _isLoading.postValue(false)
             }
-
-            //Todo history 추가
+            _isLoading.postValue(false)
         }
     }
 }
