@@ -32,7 +32,7 @@ targetSdk
 - [x] Retrofit 사용하여 네이버 API 연결 및 테스트
 - [x] Room 사용하여 DB 연결/저장 및 테스트
 - [x] MVVM 구현
-- [ ] 코루틴 적용
+- [x] 코루틴 적용
 - [ ] hilt 적용
 
 ## 라이브러리 적용사항
