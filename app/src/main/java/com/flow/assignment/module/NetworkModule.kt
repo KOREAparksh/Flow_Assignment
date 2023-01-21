@@ -22,16 +22,15 @@ object NetworkModule {
     @Provides
     fun provideBaseUrl() = BuildConfig.API_URL
 
-    @Singleton
     @Provides
     fun provideNaverInterceptor() = NaverInterceptor()
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() {
+    fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-         OkHttpClient.Builder()
+         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(provideNaverInterceptor())
             //Todo timeout 상수화

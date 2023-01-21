@@ -2,8 +2,6 @@ package com.flow.assignment.repository
 
 import com.flow.assignment.dto.MovieDto
 import com.flow.assignment.service.api.MovieApi
-import com.flow.assignment.service.api.RetrofitClient
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(

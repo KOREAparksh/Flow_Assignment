@@ -8,15 +8,19 @@ import androidx.lifecycle.viewModelScope
 import com.flow.assignment.model.Movie
 import com.flow.assignment.repository.HistoryRepository
 import com.flow.assignment.repository.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.concurrent.thread
 
-class MovieViewModel constructor(
-    private val context: Context
+@HiltViewModel
+class MovieViewModel @Inject constructor(
+    private val movieRepository: MovieRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
-    lateinit var movieRepository: MovieRepository
     lateinit var historyRepository: HistoryRepository
     private var searchQuery: String = ""
     private var totalResult: Int = 0
@@ -26,7 +30,6 @@ class MovieViewModel constructor(
     val movies: LiveData<ArrayList<Movie>> get() = _movies
 
     init {
-        movieRepository = MovieRepository()
         historyRepository = HistoryRepository(context)
         _isLoading.value = false
         _movies.value = ArrayList()
