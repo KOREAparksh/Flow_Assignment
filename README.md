@@ -42,7 +42,8 @@ targetSdk
 
 - local.properties를 활용한 외부키 분리
   - appkey와 같은 민감한 정보를 BuildConfig파일 내 생성되게 구현하였습니다.
-- 검색창 이외의 곳을 터치하면 키보드 포커스가 해제되게 구현하였습니다. 
+- 검색창 이외의 곳을 터치하면 키보드 포커스가 해제되게 구현하였습니다.
+- 영화 검색 시 10개 이상의 영화가 있을 경우 infinity scroll을 사용하여 추가 데이터를 받아오도록 하였습니다.
 
 ## 라이브러리 적용사항
 
@@ -57,23 +58,24 @@ targetSdk
   activity 종료 시 실행 중인 coroutine도 함께 종료되게 구현하였습니다.
 
 - `retrofit`
+
   retrofit을 사용하여 API 통신을 구현하였습니다.
   특히 `local.properties`내에 api주소와 appkey를 적용하여,
   보안 및 여러 API 확장성을 신경써보았습니다.
+
+
 - `glide`
   network 이미지 편리함을 위해 사용하였습니다.
-  poster주소가 없을 경우 drawable 내 default image를 가져오게 하였습니다.
-- viewBinding을
-  viewBinding을 사용하여 layout과 코드 간 보일러플레이트를 제거하였고,
-  loading progressbar visible 등을 편하게 처리하였습니다.
 
-</br>
 
-- hilt
-  정확한 동작원리의 이해가 더 필요하다고 판단하여 이번 과제에서 제외하였습니다.
-  남들이 하는대로만 따라하기보단 정확히 아는 상태에서 써야한다고 생각하였습니다.
-- databinding
-  기능구현 완료 후 적용하려 하였으나 적용하지 못하였습니다.
+- `databinding`
+  데이터바인딩을 적용하여 observing된 데이터를 자동으로 업데이트하도록 하였습니다.
+
+
+- `hilt`
+  DB, 통신 등 외부 라이브러리 사용과 각종 ViewModel, Service 클래스들의 의존성 주입을 위해 Hilt를 사용했습니다.
+
+
 
 # 컨벤션
 
