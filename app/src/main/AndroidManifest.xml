@@ -13,6 +13,10 @@
 		android:theme="@style/Theme.Flow_assignment"
 		>
 		<activity
+			android:name=".HistoryActivity"
+			android:exported="false"
+			/>
+		<activity
 			android:name=".MainActivity"
 			android:exported="true"
 			>

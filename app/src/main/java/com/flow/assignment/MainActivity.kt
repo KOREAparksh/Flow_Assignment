@@ -1,12 +1,17 @@
 package com.flow.assignment
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.window.OnBackInvokedDispatcher
 import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.flow.assignment.viewmodel.HistoryViewModel
 import com.flow.assignment.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
@@ -24,5 +29,10 @@ class MainActivity : AppCompatActivity() {
             delay(1000)
             movieViewModel.searchMore()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        movieViewModel.viewModelScope.cancel()
     }
 }
