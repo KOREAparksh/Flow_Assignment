@@ -20,10 +20,8 @@ import kotlin.concurrent.thread
 @HiltViewModel
 class MovieViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
-    private val movieRepository2: MovieRepository,
-    @ApplicationContext private val context: Context
+    private val historyRepository: HistoryRepository,
 ) : ViewModel() {
-    lateinit var historyRepository: HistoryRepository
     private var searchQuery: String = ""
     private var totalResult: Int = 0
     private val _isLoading = MutableLiveData<Boolean>()
@@ -35,7 +33,6 @@ class MovieViewModel @Inject constructor(
     }
 
     init {
-        historyRepository = HistoryRepository(context)
         _isLoading.value = false
         _movies.value = ArrayList()
     }

@@ -7,14 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flow.assignment.model.History
 import com.flow.assignment.repository.HistoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.concurrent.thread
 
-class HistoryViewModel constructor(
-    private val context: Context
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+    private var historyRepository: HistoryRepository
 ) : ViewModel()  {
-    private var historyRepository: HistoryRepository = HistoryRepository(context)
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _histories = MutableLiveData<List<History>>()
