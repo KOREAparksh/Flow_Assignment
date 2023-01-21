@@ -1,5 +1,7 @@
 package com.flow.assignment.view
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -25,7 +27,7 @@ class HistoryActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_history)
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
-        adapter = HistoryAdapter(historyViewModel.histories.value ?: listOf())
+        adapter = HistoryAdapter(historyViewModel.histories.value ?: listOf(), onClickItem())
         binding.recyclerView.adapter = adapter
         binding.recyclerView.setHasFixedSize(true)
 
@@ -33,6 +35,14 @@ class HistoryActivity : AppCompatActivity() {
         setLoadingObserver()
         setHistoryObserver()
     }
+
+    private fun onClickItem(): (String) -> Unit = {
+        val returnIntent = Intent()
+        returnIntent.putExtra("query", it)
+        setResult(Activity.RESULT_OK,returnIntent)
+        finish()
+    }
+
     private fun setHistoryObserver() {
         val observer = Observer<List<History>> {
             if (it.isEmpty()){

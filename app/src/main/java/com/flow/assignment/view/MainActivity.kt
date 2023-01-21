@@ -1,5 +1,6 @@
 package com.flow.assignment.view
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private val code:Int = 123
     private val movieViewModel: MovieViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var isFirst:Boolean = true
@@ -29,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        intent.data
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
@@ -45,7 +49,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickHistoryButton() = View.OnClickListener {
         val intent = Intent(binding.root.context, HistoryActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, code)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode) {
+                code -> {
+                    val responseData = data?.getStringExtra("query")
+                    println("@@@ query: " + responseData)
+                    binding.search.setQuery(responseData, true)
+                }
+            }
+        }
     }
 
     private fun setOnSearch() = object : SearchView.OnQueryTextListener {

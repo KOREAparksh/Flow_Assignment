@@ -1,14 +1,20 @@
 package com.flow.assignment.adapter
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.query
 import com.flow.assignment.databinding.ItemHistoryBinding
 import com.flow.assignment.model.History
 import com.flow.assignment.util.Converters
+import com.flow.assignment.view.MainActivity
 
 class HistoryAdapter(
-    private var items: List<History>
+    private var items: List<History>,
+    val onTapItem: (String)->Unit,
 )
     : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
@@ -32,6 +38,9 @@ class HistoryAdapter(
         fun bind(history: History) {
             binding.query = history.query
             binding.time = Converters.longToDate(history.createAt).toString()
+            binding.item.setOnClickListener{
+                onTapItem(history.query)
+            }
         }
     }
 
