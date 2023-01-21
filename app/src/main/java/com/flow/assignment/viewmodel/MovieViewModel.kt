@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.flow.assignment.model.Movie
 import com.flow.assignment.repository.HistoryRepository
 import com.flow.assignment.repository.MovieRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
 class MovieViewModel constructor(
@@ -29,7 +33,7 @@ class MovieViewModel constructor(
     }
 
     fun search(query: String){
-        thread {
+        viewModelScope.launch (Dispatchers.IO)  {
             _isLoading.postValue(true)
             searchQuery = query
 
@@ -50,7 +54,7 @@ class MovieViewModel constructor(
             return
         }
 
-        thread {
+        viewModelScope.launch (Dispatchers.IO) {
             _isLoading.postValue(true)
 
             val movieDto = movieRepository.getMovies(searchQuery, _movies.value!!.size + 1)
