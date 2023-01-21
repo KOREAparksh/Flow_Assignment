@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.flow.assignment.adapter.MovieAdapter
 import com.flow.assignment.databinding.ActivityMainBinding
 import com.flow.assignment.model.Movie
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.setHasFixedSize(true)
 
         binding.search.setOnQueryTextListener(setOnSearch())
+        binding.recyclerView.addOnScrollListener(onScrollListener())
         setLoadingObserver()
         setMovieObserver()
     }
@@ -55,6 +57,21 @@ class MainActivity : AppCompatActivity() {
                 println(e)
             }
             return true
+        }
+    }
+
+    private fun onScrollListener() = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val lastVisibleItemPosition =
+                (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+            val itemTotalCount = recyclerView.adapter!!.itemCount - 1
+
+            // 스크롤이 끝에 도달했는지 확인
+            if (!binding.recyclerView.canScrollVertically(1) && lastVisibleItemPosition == itemTotalCount) {
+                isFirst = false
+                movieViewModel.searchMore()
+            }
         }
     }
 
