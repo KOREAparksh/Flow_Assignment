@@ -1,8 +1,11 @@
 package com.flow.assignment
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatButton
@@ -29,6 +32,15 @@ class MainActivity : AppCompatActivity() {
             delay(1000)
             movieViewModel.searchMore()
         }
+    }
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        var view = this.currentFocus
+        if (view != null) {
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onDestroy() {
