@@ -38,8 +38,8 @@ android {
         jvmTarget = '1.8'
     }
     namespace 'com.flow.assignment'
-    
-    databinding{
+
+    dataBinding{
         enable true
     }
 }
