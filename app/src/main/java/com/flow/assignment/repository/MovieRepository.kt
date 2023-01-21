@@ -9,14 +9,14 @@ class MovieRepository {
     private val retrofit: Retrofit = RetrofitClient.getInstance()
     private val movieApi: MovieApi =  retrofit.create(MovieApi::class.java)
 
-    fun getMovies(query: String) : MovieDto{
+    suspend fun getMovies(query: String) : MovieDto{
         val api = movieApi.getMovies(query)
         val response = api.execute()
 
         return response.body()!!
     }
 
-    fun getMovies(query: String, startPoint: Int) : MovieDto{
+    suspend fun getMovies(query: String, startPoint: Int) : MovieDto{
         val api = movieApi.getMovies(query, startPoint)
         val response = api.execute()
 

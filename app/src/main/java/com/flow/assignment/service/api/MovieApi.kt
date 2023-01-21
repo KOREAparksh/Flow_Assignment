@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface MovieApi {
     @GET("movie.json")
-    fun getMovies(
+    suspend fun getMovies(
         @Query("query", encoded = true) name: String,
         @Query("start") startPoint: Int = 1
     ): Call<MovieDto>

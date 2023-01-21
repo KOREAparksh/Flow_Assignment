@@ -12,16 +12,16 @@ class HistoryRepository
         ) {
     private val historyDatabase: HistoryDatabase = HistoryDatabase.getInstance(context)!!
 
-    fun getAll() : List<History>{
+    suspend fun getAll() : List<History>{
         return historyDatabase.historyDao().getAll()
     }
 
-    fun saveHistory(history: History){
+    suspend fun saveHistory(history: History){
         // Todo: 10개 이상 시 삭제
         historyDatabase.historyDao().saveHistory(history)
     }
 
-    fun deleteHistory(history: History){
+    suspend fun deleteHistory(history: History){
         historyDatabase.historyDao().deleteHistory(history)
     }
 }

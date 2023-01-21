@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.flow.assignment.model.History
 import com.flow.assignment.repository.HistoryRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
 class HistoryViewModel constructor(
@@ -19,11 +22,11 @@ class HistoryViewModel constructor(
 
     init {
         _isLoading.value = false
-        _histories.value = listOf()
+        _histories.value = mutableListOf()
     }
 
     fun getHistories(){
-        thread {
+        viewModelScope.launch (Dispatchers.IO) {
             _isLoading.postValue(true)
             _histories.postValue(historyRepository.getAll())
             _isLoading.postValue(false)
