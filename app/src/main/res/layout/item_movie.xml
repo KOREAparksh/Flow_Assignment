@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+		<variable
+			name="movie"
+			type="com.flow.assignment.model.Movie" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="@dimen/item_margin"
+		android:elevation="@dimen/card_elevation"
+		android:id="@+id/item">
+
+		<androidx.appcompat.widget.LinearLayoutCompat
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center">
+			<androidx.appcompat.widget.AppCompatImageView
+				android:id="@+id/movie_poster"
+				android:layout_weight="1"
+				android:layout_width="0dp"
+				android:layout_height="100dp"/>
+			<androidx.appcompat.widget.LinearLayoutCompat
+				android:layout_weight="2"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:paddingLeft="20dp"
+				android:orientation="vertical"
+				android:layout_gravity="center"
+				android:gravity="center">
+				<TextView
+					android:id="@+id/title"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxLines="1"
+					android:ellipsize="end"
+					android:text="@{`제   목: ` + movie.title}"/>
+				<TextView
+					android:id="@+id/year"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@{`출시일: ` + movie.pubDate}"/>
+				<TextView
+					android:id="@+id/type"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@{`평   점: ` + movie.userRating}"/>
+			</androidx.appcompat.widget.LinearLayoutCompat>
+		</androidx.appcompat.widget.LinearLayoutCompat>
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
