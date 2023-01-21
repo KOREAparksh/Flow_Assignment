@@ -1,4 +1,4 @@
-package com.flow.assignment
+package com.flow.assignment.view
 
 import android.content.Context
 import android.content.Intent
@@ -11,21 +11,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.flow.assignment.R
 import com.flow.assignment.adapter.MovieAdapter
 import com.flow.assignment.databinding.ActivityMainBinding
 import com.flow.assignment.model.Movie
-import com.flow.assignment.viewmodel.HistoryViewModel
 import com.flow.assignment.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModels()
-    private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private var isFirst:Boolean = true
     private lateinit var adapter : MovieAdapter
@@ -34,15 +31,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.recyclerView.layoutManager = LinearLayoutManager(baseContext)
+        binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         adapter = MovieAdapter(movieViewModel.movies.value ?: arrayListOf())
         binding.recyclerView.adapter = adapter
         binding.recyclerView.setHasFixedSize(true)
 
+        binding.historyButton.setOnClickListener(onClickHistoryButton())
         binding.search.setOnQueryTextListener(setOnSearch())
         binding.recyclerView.addOnScrollListener(onScrollListener())
         setLoadingObserver()
         setMovieObserver()
+    }
+
+    private fun onClickHistoryButton() = View.OnClickListener {
+        val intent = Intent(binding.root.context, HistoryActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setOnSearch() = object : SearchView.OnQueryTextListener {
@@ -121,7 +124,5 @@ class MainActivity : AppCompatActivity() {
         //Todo:
 //        binding = null
         super.onDestroy()
-        movieViewModel.viewModelScope.cancel()
-        historyViewModel.viewModelScope.cancel()
     }
 }

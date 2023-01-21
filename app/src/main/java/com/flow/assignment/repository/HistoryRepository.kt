@@ -17,11 +17,18 @@ class HistoryRepository @Inject constructor(
     }
 
     suspend fun saveHistory(history: History){
-        // Todo: 10개 이상 시 삭제
+        if (historyDatabase.historyDao().countHistory() >= 10){
+            val temp: History = historyDatabase.historyDao().getFirst()
+            historyDatabase.historyDao().deleteHistory(temp)
+        }
         historyDatabase.historyDao().saveHistory(history)
     }
 
     suspend fun deleteHistory(history: History){
         historyDatabase.historyDao().deleteHistory(history)
+    }
+
+    suspend fun deleteAll(){
+        historyDatabase.historyDao().deleteAll()
     }
 }
