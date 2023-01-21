@@ -33,11 +33,6 @@ class MovieViewModel @Inject constructor(
         throwable.printStackTrace()
     }
 
-    init {
-        _isLoading.value = false
-        _movies.value = ArrayList()
-    }
-
     fun search(query: String){
         viewModelScope.launch (Dispatchers.IO + coroutineExceptionHandler)  {
             searchQuery = query
@@ -57,6 +52,7 @@ class MovieViewModel @Inject constructor(
                     val temp = History(query, Converters.dateToLong(LocalDateTime.now()))
                     historyRepository.saveHistory(temp)
                 }
+                delay(500)
             }
             _isLoading.postValue(false)
         }
@@ -68,13 +64,21 @@ class MovieViewModel @Inject constructor(
         }
         viewModelScope.launch (Dispatchers.IO + coroutineExceptionHandler) {
             _isLoading.postValue(true)
-            try {
-                val movieDto = movieRepository.getMovies(searchQuery, _movies.value!!.size + 1)
-                movies.value!!.addAll(movieDto.items)
-                _movies.postValue(movies.value)
-                totalResult = movieDto.total
-            }catch (e : Exception){
-                //Todo: error Dialog
+            runBlocking{
+                launch {
+                    try {
+                        val movieDto =
+                            movieRepository.getMovies(searchQuery, _movies.value!!.size + 1)
+                        movies.value!!.addAll(movieDto.items)
+                        _movies.postValue(movies.value)
+                        totalResult = movieDto.total
+                    } catch (e: Exception) {
+                        //Todo: error Dialog
+                    }
+                }
+                launch {
+                    delay(500)
+                }
             }
             _isLoading.postValue(false)
         }

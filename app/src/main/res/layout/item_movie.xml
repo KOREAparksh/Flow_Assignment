@@ -41,7 +41,9 @@
 					android:id="@+id/title"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="@{`제  목: ` + movie.title}"/>
+					android:maxLines="1"
+					android:ellipsize="end"
+					android:text="@{`제   목: ` + movie.title}"/>
 				<TextView
 					android:id="@+id/year"
 					android:layout_width="match_parent"
@@ -51,7 +53,7 @@
 					android:id="@+id/type"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="@{`평  점: ` + movie.userRating}"/>
+					android:text="@{`평   점: ` + movie.userRating}"/>
 			</androidx.appcompat.widget.LinearLayoutCompat>
 		</androidx.appcompat.widget.LinearLayoutCompat>
 
