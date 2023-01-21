@@ -2,4 +2,5 @@
 	<string name="app_name">flow_assignment</string>
 	<string name="search_hint">검색어를 입력하세요</string>
 	<string name="history_button_text">최근검색</string>
+	<string name="empty_list">텅....</string>
 </resources>

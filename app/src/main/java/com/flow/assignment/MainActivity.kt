@@ -5,34 +5,91 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.window.OnBackInvokedDispatcher
 import androidx.activity.viewModels
-import androidx.appcompat.widget.AppCompatButton
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.flow.assignment.adapter.MovieAdapter
+import com.flow.assignment.databinding.ActivityMainBinding
+import com.flow.assignment.model.Movie
 import com.flow.assignment.viewmodel.HistoryViewModel
 import com.flow.assignment.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val movieViewModel: MovieViewModel by viewModels()
     private val historyViewModel: HistoryViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
+    private var isFirst:Boolean = true
+    private lateinit var adapter : MovieAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        movieViewModel.search("1")
-        historyViewModel.getHistories()
-        lifecycleScope.launch {
-            delay(1000)
-            movieViewModel.searchMore()
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.recyclerView.layoutManager = LinearLayoutManager(baseContext)
+        adapter = MovieAdapter(movieViewModel.movies.value ?: arrayListOf())
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
+
+        binding.search.setOnQueryTextListener(setOnSearch())
+        setLoadingObserver()
+        setMovieObserver()
+    }
+
+    private fun setOnSearch() = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextChange(newText: String?): Boolean {return true}
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            binding.search.clearFocus()
+            try {
+                isFirst = true
+                movieViewModel.search(query ?: "")
+            } catch (e: Exception) {
+                binding.textField.text = e.message
+                println(e)
+            }
+            return true
         }
     }
+
+    private fun setMovieObserver() {
+        val observer = Observer<ArrayList<Movie>> {
+            if (it.isEmpty()){
+                binding.textField.visibility = View.VISIBLE
+                binding.textField.text = baseContext.getString(R.string.empty_list)
+            }
+            else {
+                binding.textField.visibility = View.GONE
+            }
+
+            if (isFirst) {
+                adapter.setNewItems(it)
+                isFirst = false;
+            }
+            else{
+                adapter.addItems(it)
+            }
+        }
+        movieViewModel.movies.observe(this, observer)
+    }
+
+    private fun setLoadingObserver(){
+        val observer = Observer<Boolean> {
+        if (it == false)
+            binding.loading.visibility = View.GONE
+        else
+            binding.loading.visibility = View.VISIBLE
+        }
+        movieViewModel.isLoading.observe(this, observer)
+    }
+
+
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         var view = this.currentFocus
         if (view != null) {
@@ -44,7 +101,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        //Todo:
+//        binding = null
         super.onDestroy()
         movieViewModel.viewModelScope.cancel()
+        historyViewModel.viewModelScope.cancel()
     }
 }

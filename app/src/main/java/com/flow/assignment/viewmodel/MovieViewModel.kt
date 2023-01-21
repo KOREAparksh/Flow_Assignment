@@ -70,7 +70,8 @@ class MovieViewModel @Inject constructor(
             _isLoading.postValue(true)
             try {
                 val movieDto = movieRepository.getMovies(searchQuery, _movies.value!!.size + 1)
-                _movies.postValue(movieDto.items)
+                movies.value!!.addAll(movieDto.items)
+                _movies.postValue(movies.value)
                 totalResult = movieDto.total
             }catch (e : Exception){
                 //Todo: error Dialog
