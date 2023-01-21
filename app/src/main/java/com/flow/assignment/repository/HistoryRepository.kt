@@ -5,12 +5,12 @@ import com.flow.assignment.database.HistoryDatabase
 import com.flow.assignment.model.History
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class HistoryRepository
-        @Inject constructor(
-            @ApplicationContext private val context: Context
-        ) {
-    private val historyDatabase: HistoryDatabase = HistoryDatabase.getInstance(context)!!
+@Singleton
+class HistoryRepository @Inject constructor(
+    private val historyDatabase: HistoryDatabase
+    ) {
 
     suspend fun getAll() : List<History>{
         return historyDatabase.historyDao().getAll()
