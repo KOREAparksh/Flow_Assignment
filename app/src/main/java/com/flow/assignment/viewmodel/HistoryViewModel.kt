@@ -9,7 +9,9 @@ import com.flow.assignment.model.History
 import com.flow.assignment.repository.HistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
@@ -22,15 +24,13 @@ class HistoryViewModel @Inject constructor(
     private val _histories = MutableLiveData<List<History>>()
     val histories: LiveData<List<History>> get() = _histories
 
-    init {
-        _isLoading.value = false
-        _histories.value = mutableListOf()
-    }
-
     fun getHistories(){
         viewModelScope.launch (Dispatchers.IO) {
             _isLoading.postValue(true)
-            _histories.postValue(historyRepository.getAll())
+            runBlocking{
+                launch { _histories.postValue(historyRepository.getAll()) }.join()
+                launch { delay(500) }
+            }
             _isLoading.postValue(false)
         }
     }
